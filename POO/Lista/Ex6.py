@@ -31,10 +31,31 @@ class BichinhoVirtual:
     def alimentar(self):
         print(f'{nome} foi alimentado!')
         self.fome += 1
-        randint()
+        self.saude += 1
+        satisfacao = randint(0, 6)
+        if satisfacao == 0:
+            print(f'{nome} odiou comida!')
+            self.humor -= 2
+        elif satisfacao < 3:
+            print(f'{nome} não gostou da comida!')
+            self.humor -= 1
+        elif satisfacao == 3:
+            print(f'{nome} não se importou muito com a comida!')
+        elif satisfacao < 6:
+            print(f'{nome} gostou comida!')
+            self.humor += 1
+        else:
+            print(f'{nome} amou a comida!')
+            self.humor += 2
+
+    def brincar(self):
+        print(f'Você brincou com {nome}!')
+        self.humor += 1
+        self.saude -= 1
 
 
 nome = input('Escolha um nome:')
 tamagochi = BichinhoVirtual(nome, 5, 5, 0)
+idade_max = randint(7, 25)
 
-while tamagochi.idade < 20:
+while tamagochi.idade < idade_max and tamagochi.saude > 0:
