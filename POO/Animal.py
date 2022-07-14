@@ -1,4 +1,6 @@
-class Animal:
+from abc import ABC, abstractmethod
+
+class Animal(ABC):
     def __init__(self, altura: float, comprimento: float, peso: float, habitat):
         self.altura = altura
         self.comprimento = comprimento
@@ -7,6 +9,7 @@ class Animal:
         self.energia = 5
         self.estomago = []
 
+    @abstractmethod
     def comer(self, alimento):
         print('NHAC')
         self.energia -= 1
@@ -21,6 +24,7 @@ class Animal:
         print('A mimir')
         self.energia += 1
 
+    @abstractmethod
     def locomover(self):
         print('Se moveu')
         self.energia -= 1
@@ -46,6 +50,15 @@ class Felinos(Animal):
             print('Garras expandida')
             self.garras = True
 
+    def comer(self, alimento):
+        print('NHAC')
+        self.energia -= 1
+        self.estomago.append(alimento)
+
+    def locomover(self):
+        print('Caminhou')
+        self.energia -= 1
+
 
 class Caninos(Animal):
     def __init__(self, altura: float, comprimento: float, peso: float, habitat, sociavel: bool, garras_fora=False):
@@ -66,6 +79,15 @@ class Caninos(Animal):
             print('Fez amiguinhos, e formou uma matilha!')
         else:
             print('Conheceu outros, mas logo se separaram')
+
+    def comer(self, alimento):
+        print('CHOMP')
+        self.energia -= 1
+        self.estomago.append(alimento)
+
+    def locomover(self):
+        print('Caminhou')
+        self.energia -= 1
 
 
 class Cnidarios(Animal):
@@ -91,6 +113,10 @@ class Cnidarios(Animal):
         self.energia += 1
         self.estomago = False
 
+    def locomover(self):
+        print('Flutuou')
+        self.energia -= 1
+
 
 class Humano(Animal):
     def __init__(self, altura: float, comprimento: float, peso: float, habitat, gay: bool, qi: int):
@@ -109,3 +135,12 @@ class Humano(Animal):
             print('Sou não, tava só testando ele')
         else:
             print('Sou não, tava só testando ele')
+
+    def comer(self, alimento):
+        print('Nham Nham')
+        self.energia -= 1
+        self.estomago.append(alimento)
+
+    def locomover(self):
+        print('Caminhou')
+        self.energia -= 1
