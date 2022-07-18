@@ -10,7 +10,7 @@ for i in range(100):
     resposta = requests.get(alvo)
     html = BeautifulSoup(resposta.text, 'html.parser')
     for produto in html.select('.product-item-link'):
-        produtos.append(produto.text.replace('  ', '').replace('\n',''))
+        produtos.append(produto.text.replace('  ', '').replace('\n', ''))
 
     for valor in html.select('.price-wrapper .price'):
         valores.append(float(valor.text.replace('.', '').replace(',', '.').replace('R$', '')))
