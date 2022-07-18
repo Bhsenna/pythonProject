@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 from operator import itemgetter
 
-produtos = []- ''
+produtos = []
 valores = []
 geral = []
 for i in range(100):
@@ -16,7 +16,7 @@ for i in range(100):
         valores.append(float(valor.text.replace('.', '').replace(',', '.').replace('R$', '')))
 
 for i in range(len(produtos)):
-    novo_registro = {'Produto':produtos[i], 'Valor':valores[i]}
+    novo_registro = {'Produto': produtos[i], 'Valor': valores[i]}
     geral.append(novo_registro)
 
 lista_final = sorted(geral, key=itemgetter('Valor'), reverse=True)
