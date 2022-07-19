@@ -43,6 +43,7 @@ def deletar():
         print(f'{nome} foi deletado')
 
 
+acoes = {'1': criar, '2': evoluir, '3': editar, '4': listar, '5': deletar}
 while True:
     acao = input('Você deseja:\n'
                  '[1] Adicionar um Pokemon\n'
@@ -50,16 +51,7 @@ while True:
                  '[3] Editar um Pokemon\n'
                  '[4] Listar os Pokemons\n'
                  '[5] Deletar um Pokemon\n').strip()
-    if acao == '1':
-        criar()
-    elif acao == '2':
-        evoluir()
-    elif acao == '3':
-        editar()
-    elif acao == '4':
-        listar()
-    elif acao == '5':
-        deletar()
+    acoes[acao]()
     conexao.commit()
     if input('Deseja parar? ').lower() == 's':
         break
