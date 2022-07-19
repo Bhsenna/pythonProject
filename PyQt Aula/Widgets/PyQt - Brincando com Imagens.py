@@ -57,7 +57,7 @@ class Janela(QMainWindow):  # Classe para o Objeto da Janela
         self.carro.setPixmap(QtGui.QPixmap('Images/purple_car.png'))
 
     def botao2_click(self):
-        self.label_1.setText('Carro 1 selecionado!')
+        self.label_1.setText('Carro 2 selecionado!')
         self.label_1.setStyleSheet('QLabel {font:bold;font-size:25px;color:"#27d3cd"}')
         self.carro.setPixmap(QtGui.QPixmap('Images/cyan_car.png'))
 
