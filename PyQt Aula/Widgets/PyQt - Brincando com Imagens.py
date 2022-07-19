@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QToolTip, QLabel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel
 from PyQt5 import QtGui  # Módulo de Imagens
 
 
