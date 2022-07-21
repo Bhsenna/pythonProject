@@ -157,47 +157,50 @@ while True:
                       '[1] Cadastrar\n'
                       '[2] Alterar\n'
                       '[3] Excluir\n').strip()
-        codigo = input('Informe o Código de Barras: ')
-        nome = input('Informe o Nome do Produto: ')
-        fabricante = input('Informe o Fabricante: ')
+        if acao2 in '123':
+            codigo = input('Informe o Código de Barras: ')
+            nome = input('Informe o Nome do Produto: ')
+            fabricante = input('Informe o Fabricante: ')
         if acao2 == '1':
             Produto(codigo, nome, fabricante).cadastrar_produto()
         if acao2 == '2':
-            Produto(codigo, nome, fabricante).alterar_registro()
+            Produto(codigo, nome, fabricante).alterar_registro(getInt('Informe o id: '))
         if acao2 == '3':
-            Produto(codigo, nome, fabricante).excluir_registro()
+            Produto(codigo, nome, fabricante).excluir_registro(getInt('Informe o id: '))
     elif acao == '2':
         acao2 = input('Você deseja:\n'
                       '[1] Cadastrar\n'
                       '[2] Alterar\n'
                       '[3] Excluir\n').strip()
-        nome = input('Informe o Nome do Produto: ')
-        cpf = input('Informe o CPF fo Cliente: ')
-        cep = input('Informe o CEP fo Cliente: ')
+        if acao2 in '123':
+            nome = input('Informe o Nome do Cliente: ')
+            cpf = input('Informe o CPF fo Cliente: ')
+            cep = input('Informe o CEP fo Cliente: ')
         if acao2 == '1':
             Cliente(nome, cpf, cep).cadastrar_cliente()
         if acao2 == '2':
-            Cliente(nome, cpf, cep).alterar_registro()
+            Cliente(nome, cpf, cep).alterar_registro(getInt('Informe o id: '))
         if acao2 == '3':
-            Cliente(nome, cpf, cep).excluir_registro()
+            Cliente(nome, cpf, cep).excluir_registro(getInt('Informe o id: '))
     elif acao == '3':
         acao2 = input('Você deseja:\n'
                       '[1] Cadastrar\n'
                       '[2] Alterar\n'
                       '[3] Excluir\n').strip()
-        data = input('Informe a Data da Venda: ')
-        hora = input('Informe a Hora da Venda: ')
-        cpf = input('Informe o CPF fo Cliente: ')
+        if acao2 in '123':
+            data = input('Informe a Data da Venda: ')
+            hora = input('Informe a Hora da Venda: ')
+            cpf = input('Informe o CPF fo Cliente: ')
         codigo = input('Informe o Código de Barras: ')
         quantidade = getFloat('Informe a quantidade de produtos: ')
         valor_unitario = getFloat('Informe o valor unitário: ')
         if acao2 == '1':
             Vendas(data, hora, cpf, codigo, quantidade, valor_unitario).cadastrar_venda()
         if acao2 == '2':
-            Vendas(data, hora, cpf, codigo, quantidade, valor_unitario).alterar_registro()
+            Vendas(data, hora, cpf, codigo, quantidade, valor_unitario).alterar_registro(getInt('Informe o id: '))
         if acao2 == '3':
-            Vendas(data, hora, cpf, codigo, quantidade, valor_unitario).excluir_registro()
-    else:
+            Vendas(data, hora, cpf, codigo, quantidade, valor_unitario).excluir_registro(getInt('Informe o id: '))
+    elif acao in '4567':
         acoes[acao]()
     conexao.commit()
     if input('Deseja parar? ').lower() == 's':
