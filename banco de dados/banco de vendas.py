@@ -5,6 +5,7 @@ from operator import itemgetter
 from Funções.Lista.Func import getInt
 from Funções.Lista.Func import getFloat
 import pandas as pd
+
 pd.set_option('display.max_columns', 7)
 pd.set_option('display.width', 200)
 
@@ -68,6 +69,15 @@ def listar_vendas():
     print(pd.DataFrame(data))
 
 
+def validar_cpf(cpf_cliente):
+    docs = [(docbr.CPF, cpf_cliente)]
+    if cpf_cliente in cpfs:
+        existe = True
+    else:
+        existe = False
+    return docbr.validate_docs(docs)[0] and existe
+
+
 class Produto:
     def __init__(self, cod_barras, nome_produto=None, fabricante_produto=None):
         self.cob_barras = cod_barras
@@ -75,15 +85,19 @@ class Produto:
         self.fabricante_produto = fabricante_produto
 
     def cadastrar_produto(self):
-        cursor.execute('INSERT INTO produtos (cod_barras, nome_produto, fabricante_produto)'
-                       'VALUES(?,?,?)', (self.cob_barras, self.nome_produto, self.fabricante_produto))
+        try:
+            cursor.execute('INSERT INTO produtos (cod_barras, nome_produto, fabricante_produto)'
+                           'VALUES(?,?,?)', (self.cob_barras, self.nome_produto, self.fabricante_produto))
+        except sqlite3.IntegrityError as error:
+            print('Código de Barras já está cadastrado\n')
 
     def alterar_registro(self):
-        cursor.execute(f'UPDATE produtos SET nome_produto=?, fabricante_produto=? WHERE cod_barras=?', (self.nome_produto, self.fabricante_produto, self.cob_barras))
+        cursor.execute('UPDATE produtos SET nome_produto=?, fabricante_produto=? WHERE cod_barras=?', (self.nome_produto, self.fabricante_produto, self.cob_barras))
 
     def excluir_registro(self):
-        if input(f'Deseja deletar Produto? Essa ação é irreversível\n').lower() == 's':
+        if input(f'Deseja deletar Produto? Essa ação é irreversível [S/N]\n').lower().startswith('s'):
             cursor.execute('DELETE FROM produtos WHERE cod_barras=?', (self.cob_barras,))
+            cursor.execute('DELETE FROM vendas WHERE cod_barras=?', (self.cob_barras,))
             print(f'Produto foi deletado')
 
 
@@ -97,103 +111,146 @@ class Cliente:
         self.estado_cliente = endereco['uf']
         self.rua_cliente = endereco['logradouro']
 
-    def validar_cpf(self):
-        docs = [(docbr.CPF, self.cpf_cliente)]
-        return docbr.validate_docs(docs)[0]
-
     def cadastrar_cliente(self):
-        if self.validar_cpf():
-            cursor.execute('INSERT INTO clientes (nome_cliente, cpf_cliente, cep_cliente, cidade_cliente, estado_cliente, rua_cliente)'
-                           'VALUES(?,?,?,?,?,?)', (self.nome_cliente, self.cpf_cliente, self.cep_cliente, self.cidade_cliente, self.estado_cliente, self.rua_cliente))
+        try:
+            cursor.execute('INSERT INTO clientes (nome_cliente, cpf_cliente, cep_cliente, '
+                           'cidade_cliente, estado_cliente, rua_cliente)'
+                           'VALUES(?,?,?,?,?,?)', (self.nome_cliente, self.cpf_cliente, self.cep_cliente,
+                                                   self.cidade_cliente, self.estado_cliente, self.rua_cliente))
+        except sqlite3.IntegrityError as error:
+            print('CPF já está cadastrado\n')
 
     def alterar_registro(self):
-        if self.validar_cpf():
-            cursor.execute(f'UPDATE clientes SET nome_cliente=? cep_cliente=?, cidade_cliente=?, estado_cliente=?, rua_cliente=? WHERE "id cliente"=?',
-                           (self.nome_cliente, self.cep_cliente, self.cidade_cliente, self.estado_cliente, self.rua_cliente, self.cpf_cliente))
+        cursor.execute('UPDATE clientes SET nome_cliente=?, cep_cliente=?, cidade_cliente=?, estado_cliente=?, rua_cliente=? WHERE cpf_cliente=?', (self.nome_cliente, self.cep_cliente, self.cidade_cliente, self.estado_cliente, self.rua_cliente, self.cpf_cliente))
 
     def excluir_registro(self):
-        if self.validar_cpf():
-            if input(f'Deseja deletar Cliente? Essa ação é irreversível\n').lower() == 's':
-                cursor.execute('DELETE FROM clientes WHERE id cpf_cliente=?', (self.cpf_cliente,))
-                print(f'Cliente foi deletado')
+        if input(f'Deseja deletar Cliente? Essa ação é irreversível [S/N]\n').lower().startswith('s'):
+            cursor.execute('DELETE FROM clientes WHERE cpf_cliente=?', (self.cpf_cliente,))
+            cursor.execute('DELETE FROM vendas WHERE CPF_cliente=?', (self.cpf_cliente,))
+            print(f'Cliente foi deletado')
 
 
 class Vendas:
-    def __init__(self, data_venda=None, hora_venda=None, cpf_cliente=None, cod_barras=None, quantidade:float=None, valor_unitario:float=None):
+    def __init__(self, data_venda=None, hora_venda=None, cpf_cliente=None,
+                 cod_barras=None, quantidade: float = None, valor_unitario: float = None):
         self.data_venda = data_venda
         self.hora_venda = hora_venda
         self.cpf_cliente = cpf_cliente
         self.cod_barras = cod_barras
         self.quantidade = quantidade
         self.valor_unitario = valor_unitario
-        self.valor_total = self.quantidade * self.valor_unitario
+        if self.valor_unitario is not None and self.quantidade is not None:
+            self.valor_total = self.quantidade * self.valor_unitario
 
     def cadastrar_venda(self):
-        cursor.execute('INSERT INTO vendas (data_venda, hora_venda, CPF_cliente, cod_barras, quantidade, valor_unitario, valor_total)'
-                       'VALUES(?,?,?,?,?,?,?)', (self.data_venda, self.hora_venda, self.cpf_cliente, self.cod_barras, self.quantidade, self.valor_unitario, self.valor_total))
+        cursor.execute(
+            'INSERT INTO vendas (data_venda, hora_venda, CPF_cliente, '
+            'cod_barras, quantidade, valor_unitario, valor_total)'
+            'VALUES(?,?,?,?,?,?,?)', (self.data_venda, self.hora_venda, self.cpf_cliente,
+                                      self.cod_barras, self.quantidade, self.valor_unitario, self.valor_total))
 
     def alterar_registro(self, id_venda):
-        cursor.execute('UPDATE vendas SET data_venda=?, hora_venda=?, CPF_cliente=?, cod_barras=?, quantidade=?, '
-                       'valor_unitario=?, valor_total=? WHERE id_venda=?', (self.data_venda, self.hora_venda,
-                                                                            self.cpf_cliente, self.cod_barras,
-                                                                            self.quantidade, self.valor_unitario,
-                                                                            self.valor_total, id_venda))
+        cursor.execute('UPDATE vendas SET data_venda=?, hora_venda=?, CPF_cliente=?, cod_barras=?, quantidade=?, valor_unitario=?, valor_total=? WHERE id_venda=?', (self.data_venda, self.hora_venda, self.cpf_cliente, self.cod_barras, self.quantidade, self.valor_unitario, self.valor_total, id_venda))
 
     @staticmethod
     def excluir_registro(id_venda):
-        if input(f'Deseja deletar Venda? Essa ação é irreversível\n').lower() == 's':
+        if input(f'Deseja deletar Venda? Essa ação é irreversível [S/N]\n').lower().startswith('s'):
             cursor.execute('DELETE FROM vendas WHERE id_venda=?', (id_venda,))
             print(f'Venda foi deletada')
 
 
 def rank_cliente():
+    data = {
+        '   Cliente (CPF)': [],
+        '   Valor (R$)': []
+    }
     dic = {}
-    cursor.execute('SELECT CPF_cliente FROM vendas')
-    for cpf in cursor.fetchall():
-        dic[cpf[0]] = cursor.execute('SELECT CPF_cliente FROM vendas').fetchall().count(cpf)
+    cursor.execute('SELECT * FROM vendas')
+    for venda in cursor.fetchall():
+        dic[f'{venda[3]}'] = 0
+    for venda in cursor.execute('SELECT * FROM vendas').fetchall():
+        dic[f'{venda[3]}'] += venda[7]
     new_dic = sorted(dic.items(), key=itemgetter(1), reverse=True)
     for i in new_dic:
-        print(f'{i[0]} - {i[1]}')
+        data['   Cliente (CPF)'] += [i[0]]
+        data['   Valor (R$)'] += [i[1]]
+    print(pd.DataFrame(data))
 
 
 def rank_produto():
+    data = {
+        '   Código de Barras': [],
+        '   Valor (R$)': []
+    }
     dic = {}
-    cursor.execute('SELECT cod_barras FROM vendas')
-    for cod in cursor.fetchall():
-        dic[cod[0]] = cursor.execute('SELECT cod_barras FROM vendas').fetchall().count(cod)
+    cursor.execute('SELECT * FROM vendas')
+    for venda in cursor.fetchall():
+        dic[f'{venda[4]}'] = 0
+    for venda in cursor.execute('SELECT * FROM vendas').fetchall():
+        dic[f'{venda[4]}'] += venda[7]
     new_dic = sorted(dic.items(), key=itemgetter(1), reverse=True)
     for i in new_dic:
-        print(f'{i[0]} - {i[1]}')
+        data['   Código de Barras'] += [i[0]]
+        data['   Valor (R$)'] += [i[1]]
+    print(pd.DataFrame(data))
 
 
-def listar_cpf():
-    dic = {}
-    cursor.execute('SELECT CPF_cliente FROM vendas')
-    for cpf in cursor.fetchall():
-        dic[cpf[0]] = []
-    for i in cursor.execute('SELECT * FROM vendas').fetchall():
-        dic[i[3]] += [i]
-    for i in dic:
-        print(f'\n{i} -')
-        for j in dic[i]:
-            print(j)
+def listar_cpf(cpf):
+    data = {
+        '   Data': [],
+        '   Hora': [],
+        '   CPF do Cliente': [],
+        '   Código de Barras': [],
+        '   Quantidade': [],
+        '   Valor Unitário': [],
+        '   Valor Total': []
+    }
+    cursor.execute('SELECT * FROM vendas')
+    for venda in cursor.fetchall():
+        if venda[3] == cpf:
+            data['   Data'] += [venda[1]]
+            data['   Hora'] += [venda[2]]
+            data['   CPF do Cliente'] += [venda[3]]
+            data['   Código de Barras'] += [venda[4]]
+            data['   Quantidade'] += [venda[5]]
+            data['   Valor Unitário'] += [venda[6]]
+            data['   Valor Total'] += [venda[7]]
+    print(pd.DataFrame(data))
 
 
-def listar_codigo():
-    dic = {}
-    cursor.execute('SELECT cod_barras FROM vendas')
-    for cpf in cursor.fetchall():
-        dic[cpf[0]] = []
-    for i in cursor.execute('SELECT * FROM vendas').fetchall():
-        dic[i[4]] += [i]
-    for i in dic:
-        print(f'\n{i} -')
-        for j in dic[i]:
-            print(j)
+def listar_codigo(codigo):
+    data = {
+        '   Data': [],
+        '   Hora': [],
+        '   CPF do Cliente': [],
+        '   Código de Barras': [],
+        '   Quantidade': [],
+        '   Valor Unitário': [],
+        '   Valor Total': []
+    }
+    cursor.execute('SELECT * FROM vendas')
+    for venda in cursor.fetchall():
+        if venda[4] == codigo:
+            data['   Data'] += [venda[1]]
+            data['   Hora'] += [venda[2]]
+            data['   CPF do Cliente'] += [venda[3]]
+            data['   Código de Barras'] += [venda[4]]
+            data['   Quantidade'] += [venda[5]]
+            data['   Valor Unitário'] += [venda[6]]
+            data['   Valor Total'] += [venda[7]]
+    print(pd.DataFrame(data))
 
 
 acoes = {'4': listar_cpf, '5': listar_codigo, '6': rank_produto, '7': rank_cliente}
 while True:
+    cpfs = []
+    cursor.execute('SELECT cpf_cliente FROM clientes')
+    for i in cursor.fetchall():
+        cpfs.append(i[0])
+    codigos = []
+    cursor.execute('SELECT cod_barras FROM produtos')
+    for i in cursor.fetchall():
+        codigos.append(i[0])
     acao = input('Você deseja:\n'
                  '[1] Interagir com Produtos\n'
                  '[2] Interagir com Clientes\n'
@@ -201,7 +258,7 @@ while True:
                  '[4] Listar as vendas por CPF\n'
                  '[5] Listar as vendas por Código de Barras\n'
                  '[6] Rankear as vendas por Produto\n'
-                 '[7] Rnakear as vendas por Cliente\n').strip()
+                 '[7] Rankear as vendas por Cliente\n').strip()
     if acao == '1':
         acao2 = input('Você deseja:\n'
                       '[1] Cadastrar\n'
@@ -215,12 +272,16 @@ while True:
         if acao2 == '2':
             listar_produtos()
             codigo = input('Informe o Código de Barras: ')
+            while codigo not in codigos:
+                codigo = input('Insira um Código de Barras valido: ')
             nome = input('Informe o Nome do Produto: ')
             fabricante = input('Informe o Fabricante: ')
             Produto(codigo, nome, fabricante).alterar_registro()
         if acao2 == '3':
             listar_produtos()
             codigo = input('Informe o Código de Barras: ')
+            while codigo not in codigos:
+                codigo = input('Insira um Código de Barras valido: ')
             Produto(codigo).excluir_registro()
         listar_produtos()
     elif acao == '2':
@@ -229,19 +290,27 @@ while True:
                       '[2] Alterar\n'
                       '[3] Excluir\n').strip()
         if acao2 == '1':
+            cpf = input('Informe o CPF do Cliente: ').replace('-', '').replace('.', '')
+            docs = [(docbr.CPF, cpf)]
+            while not docbr.validate_docs(docs)[0]:
+                cpf = input('Insira um CPF valido: ').replace('-', '').replace('.', '')
+                docs = [(docbr.CPF, cpf)]
             nome = input('Informe o Nome do Cliente: ')
-            cpf = input('Informe o CPF fo Cliente: ')
-            cep = input('Informe o CEP fo Cliente: ')
+            cep = input('Informe o CEP do Cliente: ').replace('-', '')
             Cliente(cpf, nome, cep).cadastrar_cliente()
         if acao2 == '2':
             listar_clientes()
+            cpf = input('Informe o CPF do Cliente: ').replace('-', '').replace('.', '')
+            while not validar_cpf(cpf):
+                cpf = input('Insira um CPF valido: ').replace('-', '').replace('.', '')
             nome = input('Informe o Nome do Cliente: ')
-            cpf = input('Informe o CPF fo Cliente: ')
-            cep = input('Informe o CEP fo Cliente: ')
+            cep = input('Informe o CEP do Cliente: ').replace('-', '')
             Cliente(cpf, nome, cep).alterar_registro()
         if acao2 == '3':
             listar_clientes()
             cpf = input('Informe o CPF fo Cliente: ')
+            while not validar_cpf(cpf):
+                cpf = input('Insira um CPF valido: ').replace('-', '').replace('.', '')
             Cliente(cpf).excluir_registro()
         listar_clientes()
     elif acao == '3':
@@ -252,8 +321,12 @@ while True:
         if acao2 == '1':
             data = input('Informe a Data da Venda: ')
             hora = input('Informe a Hora da Venda: ')
-            cpf = input('Informe o CPF fo Cliente: ')
+            cpf = input('Informe o CPF do Cliente: ').replace('-', '').replace('.', '')
+            while cpf not in cpfs:
+                cpf = input('Insira um CPF valido: ').replace('-', '').replace('.', '')
             codigo = input('Informe o Código de Barras: ')
+            while codigo not in codigos:
+                codigo = input('Insira um Código de Barras valido: ')
             quantidade = getFloat('Informe a quantidade de produtos: ')
             valor_unitario = getFloat('Informe o valor unitário: ')
             Vendas(data, hora, cpf, codigo, quantidade, valor_unitario).cadastrar_venda()
@@ -262,7 +335,7 @@ while True:
             id_venda = getInt('Informe o id: ')
             data = input('Informe a Data da Venda: ')
             hora = input('Informe a Hora da Venda: ')
-            cpf = input('Informe o CPF fo Cliente: ')
+            cpf = input('Informe o CPF do Cliente: ')
             codigo = input('Informe o Código de Barras: ')
             quantidade = getFloat('Informe a quantidade de produtos: ')
             valor_unitario = getFloat('Informe o valor unitário: ')
@@ -272,9 +345,14 @@ while True:
             Vendas().excluir_registro(getInt('Informe o id: '))
         listar_vendas()
     elif acao in '4567':
-        acoes[acao]()
+        if acao == '4':
+            acoes[acao](input('Informe o CPF: '))
+        elif acao == '5':
+            acoes[acao](input('Informe o Código de Barras: '))
+        else:
+            acoes[acao]()
     conexao.commit()
-    if input('Deseja parar? [S/N]\n').lower() == 's':
+    if input('Deseja parar? [S/N]\n').lower().startswith('s'):
         break
 
 cursor.close()
