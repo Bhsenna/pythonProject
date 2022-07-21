@@ -191,9 +191,9 @@ while True:
             data = input('Informe a Data da Venda: ')
             hora = input('Informe a Hora da Venda: ')
             cpf = input('Informe o CPF fo Cliente: ')
-        codigo = input('Informe o Código de Barras: ')
-        quantidade = getFloat('Informe a quantidade de produtos: ')
-        valor_unitario = getFloat('Informe o valor unitário: ')
+            codigo = input('Informe o Código de Barras: ')
+            quantidade = getFloat('Informe a quantidade de produtos: ')
+            valor_unitario = getFloat('Informe o valor unitário: ')
         if acao2 == '1':
             Vendas(data, hora, cpf, codigo, quantidade, valor_unitario).cadastrar_venda()
         if acao2 == '2':
