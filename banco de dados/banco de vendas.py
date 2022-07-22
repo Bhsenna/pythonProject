@@ -26,7 +26,11 @@ def listar_produtos():
         data['   Código de Barras'] += [produto[1]]
         data['   Produto'] += [produto[2]]
         data['   Fabricante'] += [produto[3]]
-    print(pd.DataFrame(data))
+    data_frame = pd.DataFrame(data)
+    if str(data_frame).startswith('Empty DataFrame'):
+        print('Não há vendas registradas')
+    else:
+        print(data_frame)
 
 
 def listar_clientes():
@@ -46,7 +50,11 @@ def listar_clientes():
         data['   Cidade'] += [cliente[4]]
         data['   Estado'] += [cliente[5]]
         data['   Rua'] += [cliente[6]]
-    print(pd.DataFrame(data))
+    data_frame = pd.DataFrame(data)
+    if str(data_frame).startswith('Empty DataFrame'):
+        print('Não há vendas registradas')
+    else:
+        print(data_frame)
 
 
 def listar_vendas():
@@ -68,7 +76,11 @@ def listar_vendas():
         data['   Quantidade'] += [venda[5]]
         data['   Valor Unitário'] += [f'{venda[6]:.2f}']
         data['   Valor Total'] += [f'{venda[7]:.2f}']
-    print(pd.DataFrame(data))
+    data_frame = pd.DataFrame(data)
+    if str(data_frame).startswith('Empty DataFrame'):
+        print('Não há vendas registradas')
+    else:
+        print(data_frame)
 
 
 def validar_cpf(cpf_cliente):
@@ -97,12 +109,11 @@ class Produto:
         except sqlite3.IntegrityError:
             print('Código de Barras já está cadastrado\n')
 
-    @staticmethod
-    def alterar_registro(cod_barras):
+    def alterar_registro(self):
         opcoes = ["nome_produto", "fabricante_produto"]
         escolha = getInt('Você deseja alterar:\n[0] Nome do Produto\n[1] Fabricante do Produto\n')
         novo_valor = input('Informe o novo valor: ')
-        cursor.execute(f'UPDATE produtos SET {opcoes[escolha]}=? WHERE cod_barras=?', (novo_valor, cod_barras))
+        cursor.execute(f'UPDATE produtos SET {opcoes[escolha]}=? WHERE cod_barras=?', (novo_valor, self.cod_barras))
 
     def excluir_registro(self):
         if input(f'Deseja deletar Produto? Essa ação é irreversível [S/N]\n').lower().startswith('s'):
@@ -130,7 +141,7 @@ class Cliente:
         except sqlite3.IntegrityError:
             print('CPF já está cadastrado\n')
 
-    def alterar_registro(self, cpf_cliente):
+    def alterar_registro(self):
         if self.validar_cpf():
             opcoes = ["nome_cliente", "cep_cliente"]
             escolha = getInt('Você deseja alterar:\n[0] Nome do Cliente\n[1] CEP do Cliente\n')
@@ -141,9 +152,9 @@ class Cliente:
                 estado_cliente = endereco['uf']
                 rua_cliente = endereco['logradouro']
                 cursor.execute(f'UPDATE clientes SET cep_cliente=?, cidade_cliente=?, estado_cliente=?, rua_cliente=? WHERE cpf_cliente=?',
-                               (novo_valor[escolha], cidade_cliente, estado_cliente, rua_cliente, cpf_cliente))
+                               (novo_valor[escolha], cidade_cliente, estado_cliente, rua_cliente, self.cpf_cliente))
             else:
-                cursor.execute(f'UPDATE clientes SET {opcoes[escolha]}=? WHERE cpf_cliente=?', (novo_valor, cpf_cliente))
+                cursor.execute(f'UPDATE clientes SET {opcoes[escolha]}=? WHERE cpf_cliente=?', (novo_valor, self.cpf_cliente))
 
     def excluir_registro(self):
         if input(f'Deseja deletar Cliente? Essa ação é irreversível [S/N]\n').lower().startswith('s'):
@@ -318,7 +329,7 @@ while True:
             codigo = input('Informe o Código de Barras: ')
             while codigo not in codigos:
                 codigo = input('Insira um Código de Barras valido: ')
-            Produto(None, None, None).alterar_registro(codigo)
+            Produto(codigo, None, None).alterar_registro()
         if acao2 == '3':
             listar_produtos()
             codigo = input('Informe o Código de Barras: ')
@@ -345,7 +356,7 @@ while True:
             cpf = input('Informe o CPF do Cliente: ').replace('-', '').replace('.', '')
             while not validar_cpf(cpf):
                 cpf = input('Insira um CPF valido: ').replace('-', '').replace('.', '')
-            Cliente(None, None, None).alterar_registro(cpf)
+            Cliente(cpf, None, None).alterar_registro()
         if acao2 == '3':
             listar_clientes()
             cpf = input('Informe o CPF fo Cliente: ')
