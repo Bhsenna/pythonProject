@@ -268,6 +268,27 @@ class Voos:
             print(f'Voo foi deletada')
 
 
+def relatorio(opcao):
+    data = {
+        '   N° Passageiros': [],
+        '   Assentos Disponíveis': [],
+        '   Ocupação': [],
+        '   Carga Carregada (Kg)': []
+    }
+    if opcao == '1':
+        data_inicio = input('Informe a primeira data (DD/MM/YYYY): ')
+        data_inicio = int(data_inicio[6:] + data_inicio[3:5] + data_inicio[:2])
+        data_final = input('Informe a segunda data (DD/MM/YYYY): ')
+        data_final = int(data_final[6:] + data_final[3:5] + data_final[:2])
+        if data_final < data_inicio:
+            data_final, data_inicio = data_inicio, data_final
+    elif opcao == '2':
+        empresa = input('Informe a empresa: ')
+    elif opcao == '3':
+        aeroporto = input('Informe o aeroporto: ')
+
+
+
 dic1 = {'1': 'Aeronave', '2': 'Empresa', '3': 'Aeroporto', '4': 'Voo'}
 while True:
     aeronaves = []
@@ -290,11 +311,13 @@ while True:
                  '[1] Interagir com Aeronaves\n'
                  '[2] Interagir com Empresas\n'
                  '[3] Interagir com Aeroportos\n'
-                 '[4] Interagir com Voos\n').strip()
-    acao2 = input('Você deseja:\n'
-                  f'[1] Cadastrar {dic1[acao]}\n'
-                  f'[2] Editar {dic1[acao]}\n'
-                  f'[3] Deletar {dic1[acao]}\n').strip()
+                 '[4] Interagir com Voos\n'
+                 '[5] Ver relatório\n').strip()
+    if acao in '1234':
+        acao2 = input('Você deseja:\n'
+                      f'[1] Cadastrar {dic1[acao]}\n'
+                      f'[2] Editar {dic1[acao]}\n'
+                      f'[3] Deletar {dic1[acao]}\n').strip()
     if acao == '1':  # Aeronave
         if acao2 == '1':  # Cadastrar
             codigo = input('Informe o código da Aeronave: ')
@@ -389,6 +412,12 @@ while True:
             codigo = input('Informe o Código do Voo que vai ser excluido: ')
             Voos(codigo).excluir()
         listar_Voos()
+    elif acao == '5':
+        filtro = input('Você deseja filtrar por:\n'
+                       '[1] Período\n'
+                       '[2] Empresa\n'
+                       '[3] Aeroporto\n')
+        relatorio(filtro)
     conexao.commit()
     if input('Deseja parar? [S/N]\n').lower().startswith('s'):
         break
