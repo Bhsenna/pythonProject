@@ -1,13 +1,8 @@
-import requests
 import sqlite3
-import validate_docbr as docbr
-from operator import itemgetter
 from Funções.Lista.Func import getInt
 from Funções.Lista.Func import getFloat
 import pandas as pd
-import barcodenumber
 import arrow
-from bs4 import BeautifulSoup
 
 pd.set_option('display.max_columns', 14)
 pd.set_option('display.width', 400)
@@ -275,6 +270,7 @@ def relatorio(opcao):
         '   Ocupação': [],
         '   Carga Carregada (Kg)': []
     }
+    cursor.execute('SELECT * from Voos')
     if opcao == '1':
         data_inicio = input('Informe a primeira data (DD/MM/YYYY): ')
         data_inicio = int(data_inicio[6:] + data_inicio[3:5] + data_inicio[:2])
@@ -282,11 +278,36 @@ def relatorio(opcao):
         data_final = int(data_final[6:] + data_final[3:5] + data_final[:2])
         if data_final < data_inicio:
             data_final, data_inicio = data_inicio, data_final
-    elif opcao == '2':
-        empresa = input('Informe a empresa: ')
-    elif opcao == '3':
-        aeroporto = input('Informe o aeroporto: ')
+        for voo in cursor.fetchall():
+            if data_inicio <= int(voo[1][6:] + voo[1][3:5] + voo[1][:2]) <= data_final:
+                data['   N° Passageiros'] += [voo[6]]
+                data['   Assentos Disponíveis'] += [voo[7]]
+                data['   Carga Carregada (Kg)'] += [voo[8]]
+                data['   Ocupação'] += [voo[6] / (voo[7]+voo[6])]
 
+    elif opcao == '2':
+        empresa = input('Informe o código da empresa: ')
+        for voo in cursor.fetchall():
+            if voo[5] == empresa:
+                data['   N° Passageiros'] += [voo[6]]
+                data['   Assentos Disponíveis'] += [voo[7]]
+                data['   Carga Carregada (Kg)'] += [voo[8]]
+                data['   Ocupação'] += [voo[6] / (voo[7] + voo[6])]
+
+    elif opcao == '3':
+        aeroporto = input('Informe o código do aeroporto: ')
+        for voo in cursor.fetchall():
+            if voo[3] == aeroporto or voo[4] == aeroporto:
+                data['   N° Passageiros'] += [voo[6]]
+                data['   Assentos Disponíveis'] += [voo[7]]
+                data['   Carga Carregada (Kg)'] += [voo[8]]
+                data['   Ocupação'] += [voo[6] / (voo[7] + voo[6])]
+
+    data_frame = pd.DataFrame(data)
+    if str(data_frame).startswith('Empty DataFrame'):
+        print('Não há Voos registrados')
+    else:
+        print(data_frame)
 
 
 dic1 = {'1': 'Aeronave', '2': 'Empresa', '3': 'Aeroporto', '4': 'Voo'}
