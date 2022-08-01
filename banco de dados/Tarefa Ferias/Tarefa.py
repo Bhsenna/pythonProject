@@ -352,7 +352,7 @@ while True:
             Aeronaves(codigo).alterar()
         elif acao2 == '3':  # Deletar
             listar_Aeronaves()
-            codigo = input('Informe o Código da Aeronave que vai ser excluida: ')
+            codigo = input('Informe o Código da Aeronave que vai ser excluída: ')
             Aeronaves(codigo).excluir()
         listar_Aeronaves()
     elif acao == '2':  # Empresa
@@ -368,7 +368,7 @@ while True:
             Empresas(codigo).alterar()
         elif acao2 == '3':  # Deletar
             listar_Empresas()
-            codigo = input('Informe o Código da Empresa que vai ser excluida: ')
+            codigo = input('Informe o Código da Empresa que vai ser excluída: ')
             Empresas(codigo).excluir()
         listar_Empresas()
     elif acao == '3':  # Aeroportos
@@ -387,7 +387,7 @@ while True:
             Aeroportos(codigo).alterar()
         elif acao2 == '3':  # Deletar
             listar_Aeroportos()
-            codigo = input('Informe o Código do Aeroporto que vai ser exluido: ')
+            codigo = input('Informe o Código do Aeroporto que vai ser excluído: ')
             Aeroportos(codigo).excluir()
         listar_Aeroportos()
     elif acao == '4':  # Voos
@@ -430,7 +430,7 @@ while True:
             Voos(codigo).alterar()
         elif acao2 == '3':  # Deletar
             listar_Voos()
-            codigo = input('Informe o Código do Voo que vai ser excluido: ')
+            codigo = input('Informe o Código do Voo que vai ser excluído: ')
             Voos(codigo).excluir()
         listar_Voos()
     elif acao == '5':
