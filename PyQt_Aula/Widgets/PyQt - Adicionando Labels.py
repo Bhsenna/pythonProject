@@ -52,6 +52,7 @@ class Janela(QMainWindow):  # Classe para o Objeto da Janela
         self.label_1.setText('O botao 2 foi clicado!')
         self.label_1.setStyleSheet('QLabel {font:bold;font-size:25px;color:"#27d3cd"}')
 
+
 aplicacao = QApplication(sys.argv)  # Intancia uma Aplicação do PyQt
 janela = Janela()  # Instancia um objeto da Janela
 sys.exit(aplicacao.exec_())  # Roda a Aplicação

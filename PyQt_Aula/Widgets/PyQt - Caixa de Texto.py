@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel
+from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton, QLabel, QLineEdit
 from PyQt5 import QtGui  # Módulo de Imagens
 
 
@@ -16,6 +16,11 @@ class Janela(QMainWindow):  # Classe para o Objeto da Janela
         # Parâmetro de Nome da Janela
         self.titulo = 'Primeira Janela'
 
+        # Instancia uma caixa de texto
+        self.caixa_texto = QLineEdit(self)
+        self.caixa_texto.move(25, 20)  # Define a Posição da Caixa de Texto  —  Mesma lógica do PyAutoGUI
+        self.caixa_texto.resize(250, 50)  # Define o Tamanho da Caixa de Texto  —  (Largura, altura)
+
         # Instancia um Botão
         botao1 = QPushButton('Carro 1', self)
         botao1.move(150, 200)  # Define a Posição do Botão  —  Mesma lógica do PyAutoGUI
@@ -24,11 +29,16 @@ class Janela(QMainWindow):  # Classe para o Objeto da Janela
         botao1.clicked.connect(self.botao1_click)  # Quando botão for clicado, realiza a Função dada (deve ser colocada com self. e sem parenteses)
 
         botao2 = QPushButton('Carro 2', self)
-        botao2.move(400, 200)
+        botao2.move(350, 200)
         botao2.resize(150, 80)
-        botao2.setStyleSheet(
-            'QPushButton {background-color:#27d3cd;font:bold;font-size:20px}')
+        botao2.setStyleSheet('QPushButton {background-color:#27d3cd;font:bold;font-size:20px}')
         botao2.clicked.connect(self.botao2_click)
+
+        botao_caixa = QPushButton('Enviar texto', self)
+        botao_caixa.move(550, 200)
+        botao_caixa.resize(150, 80)
+        botao_caixa.setStyleSheet('QPushButton {background-color:#49cc19;font:bold;font-size:20px}')
+        botao_caixa.clicked.connect(self.mostra_texto)
 
         # Instancia uma Label  —  Usar o self. permite que o Objeto seja acessado fora do __init__
         self.label_1 = QLabel(self)  # Instancia o Objeto de Label
@@ -36,6 +46,12 @@ class Janela(QMainWindow):  # Classe para o Objeto da Janela
         self.label_1.move(50, 100)  # Define a Posição da Label  —  Mesma lógica do PyAutoGUI
         self.label_1.setStyleSheet('QLabel {font:bold;font-size:25px}')
         self.label_1.resize(300, 25)  # Altera o Tamanho da Label, necessário para mostrar tod0 o Text
+
+        self.label_caixa = QLabel(self)
+        self.label_caixa.setText('Digitou: ')
+        self.label_caixa.move(450, 100)
+        self.label_caixa.setStyleSheet('QLabel {font:bold;font-size:25px}')
+        self.label_caixa.resize(300, 25)
 
         # Criando uma Image
         self.carro = QLabel(self)  # Instancia o Objeto de Label
@@ -60,6 +76,10 @@ class Janela(QMainWindow):  # Classe para o Objeto da Janela
         self.label_1.setText('Carro 2 selecionado!')
         self.label_1.setStyleSheet('QLabel {font:bold;font-size:25px;color:"#27d3cd"}')
         self.carro.setPixmap(QtGui.QPixmap('Images/cyan_car.png'))
+
+    def mostra_texto(self):
+        conteudo = self.caixa_texto.text()  # Variável recebe o texto digitado dentro da Caixa de Texto
+        self.label_caixa.setText('Digitou: ' + conteudo)  # Define o texto da Label como a varíavel 'conteudo'
 
 
 aplicacao = QApplication(sys.argv)  # Instancia uma Aplicação do PyQt
