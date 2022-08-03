@@ -1,5 +1,6 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QPushButton
+from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtWidgets import QPushButton
 
 
 class Janela(QMainWindow):  # Classe para o Objeto da Janela
