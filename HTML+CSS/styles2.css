@@ -1,22 +1,19 @@
-body{
-    /* background: linear-gradient(to bottom, #1307f5 0%, #f40bc6 79%); */
-    height: 100px;
-    background-color: aquamarine;
+.body1{
+    height: 250px;
+    background: linear-gradient(to right, #4e4e4e 64%, #f2b90d 0%);
 }
 html{
-    background-color: darkslategrey;
-}
-h1{
-    color: blueviolet;
+    background-color: gray;
 }
 h3{
-    color: darkorange;
+    font-weight: lighter;
+    position: relative;
+    left: 50%;
+    margin-left: -200px;
+    width: 400px;
     text-align: center;
-    margin-left: 150px;
-    margin-right: 150px;
 }
 h2{
-    color: gold;
     text-align: center;
 }
 img{
@@ -27,5 +24,15 @@ p{
     text-align: center;
 }
 .name{
-    text-align: center;
+    color: slateblue;
+    /* position: absolute;
+    left: 50%;
+    transform: translate(-50%); */
+}
+.foto{
+    width: 30%;
+    height: 30%;
+    border: 10px;
+    border-style: solid;
+    border-radius: 100%;
 }
