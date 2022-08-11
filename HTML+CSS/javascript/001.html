@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        // alert("Bom dia")  // Equivalente ao print()
+        // window.alert("Boa tarde")  // Mesma coisa que alert()
+        
+        // var nome = prompt('Qual seu nome?')  // var - seta variavel (global)  // prompt() - input
+        // let sobrenome = prompt('Qual o seu sobrenome')  // let - seta variavel (local)
+        // alert('Boa tarde '+nome+' '+sobrenome)
+        
+        // const valor = 10  // const - variavel fixa, não pode ser alterada
+        
+        // let nota = prompt('Digite a sua nota:')
+        // let frequencia = prompt('Digite a frequencia:')
+        // // && - and
+        // // || - or
+        // if (nota>=7 || frequencia>=0.75){
+        //     alert('Aprovado')
+        // }else{
+        //     alert('Reprovado')
+        // }
+
+        let lado1 = parseInt(prompt('Informe o lado 1 do Triângulo:'))
+        let lado2 = parseInt(prompt('Informe o lado 2 do Triângulo:'))
+        let lado3 = parseInt(prompt('Informe o lado 3 do Triângulo:'))
+
+        if ((lado1 + lado2 < lado3) || (lado2 + lado3 < lado1) || (lado1 + lado3 < lado2)){
+            alert('Isso não é um triângulo!')
+        }else if ((lado1 == lado2) && (lado2 == lado3)){
+            alert('Você tem um Triângulo Equilátero!')
+        }else if ((lado1 == lado2) || (lado2 == lado3) || (lado1 == lado3)){
+            alert('Você tem um Triângulo Isósceles!')
+        }else{
+            alert('Você tem um Triângulo Escaleno!')
+        }
+    </script>
+</head>
+<body>
+    <div style="width: 0;
+    height: 0;
+    border-left: 25px solid transparent;
+    border-right: 25px solid transparent;
+    border-bottom: 35.3553390593px solid #5386E4;"></div>
+</body>
+</html>
