@@ -28,23 +28,26 @@
         let lado1 = parseInt(prompt('Informe o lado 1 do Triângulo:'))
         let lado2 = parseInt(prompt('Informe o lado 2 do Triângulo:'))
         let lado3 = parseInt(prompt('Informe o lado 3 do Triângulo:'))
+        let triangulo = document.getElementById('triangulo')
 
-        if ((lado1 + lado2 < lado3) || (lado2 + lado3 < lado1) || (lado1 + lado3 < lado2)){
-            alert('Isso não é um triângulo!')
-        }else if ((lado1 == lado2) && (lado2 == lado3)){
+        if (lado1==lado2 && lado2==lado3){
             alert('Você tem um Triângulo Equilátero!')
-        }else if ((lado1 == lado2) || (lado2 == lado3) || (lado1 == lado3)){
+        }else if (lado1+lado2<lado3 || lado2+lado3<lado1 || lado1+lado3<lado2){
+            alert('Isso não é um triângulo!')
+        }else if (lado1==lado2 || lado2==lado3 || lado1==lado3){
             alert('Você tem um Triângulo Isósceles!')
         }else{
             alert('Você tem um Triângulo Escaleno!')
         }
+
+        triangulo.style.borderLeft = `${lado1}px solid transparent`
+        triangulo.style.borderRight = `${lado2}px solid transparent`
+        triangulo.style.borderBottom = `${lado3}px solid #5386E4`
+
     </script>
 </head>
 <body>
-    <div style="width: 0;
-    height: 0;
-    border-left: 25px solid transparent;
-    border-right: 25px solid transparent;
-    border-bottom: 35.3553390593px solid #5386E4;"></div>
+    <div id="triangulo" style="width: 0;
+    height: 0;"></div>
 </body>
 </html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+        function triangular(){
+            let l1 = parseInt(document.getElementById('lado1').value)
+            let l2 = parseInt(document.getElementById('lado2').value)
+            let l3 = parseInt(document.getElementById('lado3').value)
+            let resposta = document.getElementById('resposta')
+            let triangulo = document.getElementById('triangulo')
+
+            if (l1==l2 && l2==l3){
+                resposta.innerHTML = 'Você tem um Triângulo Equilátero!'
+                resposta.style.color = 'green'
+            }else if (l1+l2<l3 || l2+l3<l1 || l1+l3<l2){
+                resposta.innerHTML = 'Isso não é um triângulo!'
+                resposta.style.color = 'red'
+            }else if (l1==l2 || l2==l3 || l1==l3){
+                resposta.innerHTML = 'Você tem um Triângulo Isósceles!'
+                resposta.style.color = 'blue'
+            }else{
+                resposta.innerHTML = 'Você tem um Triângulo Escaleno!'
+                resposta.style.color = 'orange'
+            }
+            
+            triangulo.style.width = 0
+            triangulo.style.height = 0
+            triangulo.style.borderLeft = `25px solid transparent`
+            triangulo.style.borderRight = `25px solid transparent`
+            triangulo.style.borderBottom = `25px solid #5386E4`
+        }
+    </script>
+</head>
+<body>
+    <p>Lado 1: </p>
+    <input type="number" id="lado1"> <br>
+    <p>Lado 2: </p>
+    <input type="number" id="lado2"> <br>
+    <p>Lado 3: </p>
+    <input type="number" id="lado3"> <br><br>
+    <input type="button" value="Clique no Botão" id="botao" onclick="triangular()">
+    <br><br>
+    <h1 id="resposta"></h1>
+    <div id="triangulo"></div>
+
+</body>
+</html>
