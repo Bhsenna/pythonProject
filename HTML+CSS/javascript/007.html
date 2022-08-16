@@ -21,7 +21,7 @@
             if (conta.innerHTML==''){
                 conta.innerHTML = tela.innerHTML + valor
                 tela.innerHTML = ''
-            }else{
+            }else if (tela.innerHTML!=''){
                 if (conta.innerHTML.slice(-1)=='+'){
                     tela.innerHTML = (parseFloat(conta.innerHTML) + parseFloat(tela.innerHTML))
                 }else if (conta.innerHTML.slice(-1)=='-'){
@@ -32,6 +32,9 @@
                     tela.innerHTML = (parseFloat(conta.innerHTML) / parseFloat(tela.innerHTML))
                 }
                 conta.innerHTML = tela.innerHTML + valor
+                tela.innerHTML = ''
+            }else{
+                conta.innerHTML = conta.innerHTML.slice(0, -1) + valor
                 tela.innerHTML = ''
             }
         }
