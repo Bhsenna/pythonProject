@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Números com JS - Hazime</title>
+    <style>
+        body{
+            font: 12pt Arial;
+        }
+        button{
+            font-size: 12pt;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Somando dois números</h1>
+    <button onclick="clicou()">Iniciar a soma</button>
+    <p id="resultado">O resultado vem aqui...</p>
+    <script>
+        function clicou(){
+            let num1 = Number(prompt('Digite um número:'))
+            let num2 = Number(prompt('Digite outro número:'))
+            let res = document.getElementById('resultado')
+
+            res.innerHTML = (`A soma entre <mark>${num1}</mark> e <mark>${num2}</mark> é igual a <strong>${num1 + num2}</strong>!`)
+        }
+    </script>
+</body>
+</html>
