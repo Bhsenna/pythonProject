@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo em JS</title>
+    <style>
+        @font-face { font-family: 'Pacifico'; src: url('FwZY7-Qmy14u9lezJ-6H6Mk.woff2'); } 
+        body{
+            font: 12pt Arial;
+        }
+        h1, h2, h3 {
+            font-family: 'Pacifico', cursive; 
+            font-weight: normal;
+        }
+        button{
+            font-size: 12pt;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Tente adivinhar meu número</h1>
+    <button id="botao" onclick="inicio()">Tentar adivinhar</button>
+    <p id="resultado">Já pensei em um valor entre 1 e 100...</p>
+
+    <script>
+        const number = Math.trunc(Math.random() * 100) + 1
+
+        function inicio(){
+            let res = document.getElementById('resultado')
+            let button = document.getElementById('botao')
+            let palpite = Number(prompt('Qual é o seu palpite?'))
+
+            if (palpite == number){
+                res.innerHTML += `<p><strong>PARABÉNS!</strong> Você acertou! Eu tinha sorteado o valor ${number}!</p>`
+                button.style.visibility = "hidden"
+            }else if(palpite > number){
+                res.innerHTML += `<p>Você falou ${palpite}. Meu número é <strong>MENOR!<strong></p>`
+            }else if(palpite < number){
+                res.innerHTML += `<p>Você falou ${palpite}. Meu número é <strong>MAIOR!<strong></p>`
+            }
+        }
+
+        function limpar(){
+            let res = document.getElementById('resultado')
+
+            res.innerHTML = null
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estações no Brasil</title>
+    <style>
+        @font-face { font-family: 'Pacifico'; src: url('FwZY7-Qmy14u9lezJ-6H6Mk.woff2'); } 
+        body{
+            font: 12pt Arial;
+        }
+        h1, h2, h3 {
+            font-family: 'Pacifico', cursive; 
+            font-weight: normal;
+        }
+        button{
+            font-size: 12pt;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Descubra a estação do ano</h1>
+    <button onclick="inicio()">Informe o mês aqui</button>
+    <p id="resultado">Clique no botão acima para informar o mês.</p>
+
+    <script>
+        function inicio(){
+            let res = document.getElementById('resultado')
+            let mes = prompt('Digite o mês em extenso (ex: Setembro)')
+            let estacao
+
+            switch (mes.toUpperCase()){
+                case 'JANEIRO': case 'FEVEREIRO': case 'MARÇO':
+                    estacao = 'VERÃO'
+                    break
+                case 'ABRIL': case 'MAIO': case 'JUNHO':
+                    estacao = 'OUTONO'
+                    break
+                case 'JULHO': case 'AGOSTO': case 'SETEMBRO':
+                    estacao = 'INVERNO'
+                    break
+                case 'OUTUBRO': case 'NOVEMBRO': case 'DEZEMBRO':
+                    estacao = 'PRIMAVERA'
+                    break
+                default:
+                    estacao = 'INDEFINIDA'
+                    break
+            }
+            res.innerHTML = `No mês de <mark>${mes}</mark>, estamos na estação <mark><strong>${estacao}</strong></mark>`
+        }
+    </script>
+</body>
+</html>

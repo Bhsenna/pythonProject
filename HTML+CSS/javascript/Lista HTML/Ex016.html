@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculando a idade</title>
+    <style>
+        @font-face { font-family: 'Pacifico'; src: url('FwZY7-Qmy14u9lezJ-6H6Mk.woff2'); } 
+        body{
+            font: 12pt Arial;
+        }
+        h1, h2, h3 {
+            font-family: 'Pacifico', cursive; 
+            font-weight: normal;
+        }
+        button{
+            font-size: 12pt;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculando a idade</h1>
+    <button onclick="inicio()">Iniciar</button>
+    <p id="resultado">Aqui vai aparecer algo...</p>
+
+    <script>
+        function inicio(){
+            let res = document.getElementById('resultado')
+            let ano_nascimento = Number(prompt('Em que ano você nasceu?'))
+            let ano_atual = new Date().getFullYear()
+
+            res.innerHTML = `Quem nasceu em ${ano_nascimento} vai completar <strong>${ano_atual - ano_nascimento}</strong> anos em ${ano_atual}`
+        }
+    </script>
+</body>
+</html>

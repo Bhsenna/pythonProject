@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Múltiplas ações</title>
+    <style>
+        @font-face { font-family: 'Pacifico'; src: url('FwZY7-Qmy14u9lezJ-6H6Mk.woff2'); } 
+        body{
+            font: 12pt Arial;
+        }
+        h1, h2, h3 {
+            font-family: 'Pacifico', cursive; 
+            font-weight: normal;
+        }
+        button{
+            font-size: 12pt;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Múltiplas ações</h1>
+    <button id="botao" onclick="inicio()">Clique para Iniciar</button>
+    <p id="resultado">Clique no botão acima para começar.</p>
+
+    <script>
+        function inicio(){
+            let res = document.getElementById('resultado')
+            let num1 = Number(prompt('Primeiro valor:'))
+            let num2 = Number(prompt('Segundo valor:'))
+            let acao = Number(prompt(`Valores informados: ${num1} e ${num2}.
+O que vamos fazer?
+[1] Somar
+[2] Subtrair
+[3] Multiplicar
+[4] Dividir`))
+
+            res.innerHTML = '<h2>Calculando...</h2>'
+            if (acao == 1){
+                res.innerHTML += `<p>${num1} + ${num2} = <strong>${num1 + num2}</strong></p>`
+            }else if (acao == 2){
+                res.innerHTML += `<p>${num1} - ${num2} = <strong>${num1 - num2}</strong></p>`
+            }else if (acao == 3){
+                res.innerHTML += `<p>${num1} x ${num2} = <strong>${num1 * num2}</strong></p>`
+            }else if (acao == 4){
+                res.innerHTML += `<p>${num1} / ${num2} = <strong>${num1 / num2}</strong></p>`
+            }else{
+                res.innerHTML = `OPÇÃO INVÁLIDA! Você digitou ${num1} e ${num2}, mas não sei o que fazer com eles.`
+            }
+        }
+    </script>
+</body>
+</html>

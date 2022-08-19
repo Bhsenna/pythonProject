@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dados de Formulário</title>
+    <style>
+        @font-face { font-family: 'Pacifico'; src: url('FwZY7-Qmy14u9lezJ-6H6Mk.woff2'); } 
+        body{
+            font: 12pt Arial;
+        }
+        h1, h2, h3 {
+            font-family: 'Pacifico', cursive; 
+            font-weight: normal;
+        }
+        button{
+            background-color: green; 
+            color: white; 
+            font-size: 12pt; 
+            padding: 5px; 
+        }
+        input{
+            font-size: 12pt;
+        }
+    </style>
+</head>
+<body>
+    <h1>Contando de 0 até um número positivo qualquer</h1>
+    <p>Escolha o limite final para a contagem a partir do 0 (digite apenas números positivos)</p>
+    <p>Valor final: <input type="number" name="num" id="num" placeholder="Apenas positivos"> <button onclick="contar()">Contar</button></p>
+    <p>Preencha os dados acima e aperte o botão.</p>
+    <p id="contagem"></p>
+
+    <script>
+        function contar(){
+            let max = document.getElementById('num').value
+            let res = document.getElementById('contagem')
+
+            res.innerHTML += `<h2>Contando de 0 até ${max}</h2><p></p>`
+                
+                for (let i = 0; i <= max; i++){
+                    res.innerHTML += `${i} 👉 `
+                }
+                res.innerHTML += '🏁'
+        }
+    </script>
+</body>
+</html>

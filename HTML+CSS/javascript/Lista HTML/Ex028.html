@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fatorial</title>
+    <style>
+        @font-face { font-family: 'Pacifico'; src: url('FwZY7-Qmy14u9lezJ-6H6Mk.woff2'); } 
+        body{
+            font: 12pt Arial;
+        }
+        h1, h2, h3 {
+            font-family: 'Pacifico', cursive; 
+            font-weight: normal;
+        }
+        button{
+            background-color: green; 
+            color: white; 
+            font-size: 12pt; 
+            padding: 5px; 
+        }
+        input{
+            font-size: 12pt;
+        }
+    </style>
+</head>
+<body>
+    <h1>Cálculo de Fatorial</h1>
+    <p>Escreva um número (entre 1 e 21) na caixa a seguir e te mostrarei o Fatorial dele.</p>
+    <p>Número: <input type="number" name="num" id="num" placeholder="Número" max="21" min="1"> <button onclick="fatorial()">Fatorial</button></p>
+    <p id="resultado">Preencha os dados acima e aperte o botão.</p>
+
+    <script>
+        function fatorial(){
+            let num = document.getElementById('num').value
+            let res = document.getElementById('resultado')
+            let total = 1
+
+            res.innerHTML += `<h2>Calculando ${num}!</h2>`
+
+            for (let i = num; i > 1; i--){
+                res.innerHTML += `${i} x `
+                total = total * i
+            }
+            res.innerHTML += `1 = <strong>${total.toLocaleString('pt-br')}</strong>`
+        }
+    </script>
+</body>
+</html>

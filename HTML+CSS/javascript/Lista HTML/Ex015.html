@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisando Data e Hora</title>
+    <style>
+        @font-face { font-family: 'Pacifico'; src: url('FwZY7-Qmy14u9lezJ-6H6Mk.woff2'); } 
+        body{
+            font: 12pt Arial;
+        }
+        h1, h2, h3 {
+            font-family: 'Pacifico', cursive; 
+            font-weight: normal;
+        }
+        button{
+            font-size: 12pt;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Analisando data e hora do Sistema</h1>
+    <button onclick="inicio()">Iniciar Análise</button>
+    <p id="resultado">Aqui vai aparecer algo...</p>
+
+    <script>
+        function inicio(){
+            let res = document.getElementById('resultado')
+            let dia = new Date().getDate()
+            const meses = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]
+            let mes = new Date().getMonth()
+            let ano = new Date().getFullYear()
+            const semana = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sab"]
+            let dia_semana = new Date().getUTCDay()
+            let hora = new Date().getHours()
+            let minuto = new Date().getMinutes()
+            let segundo = new Date().getSeconds()
+
+            res.innerHTML = `<p>Dia: <mark>${dia}</mark></p>`
+            res.innerHTML += `<p>Mês: <mark>${meses[mes]}</mark></p>`
+            res.innerHTML += `<p>Ano: <mark>${ano}</mark></p>`
+            res.innerHTML += `<p>Dia da semana: <mark>${semana[dia_semana]}</mark></p>`
+            res.innerHTML += `<p>Hora: <mark>${hora}</mark></p>`
+            res.innerHTML += `<p>Minutos: <mark>${minuto}</mark></p>`
+            res.innerHTML += `<p>Segundos: <mark>${segundo}</mark></p>`
+        }
+    </script>
+</body>
+</html>

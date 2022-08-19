@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contagem inteligente</title>
+    <style>
+        @font-face { font-family: 'Pacifico'; src: url('FwZY7-Qmy14u9lezJ-6H6Mk.woff2'); } 
+        body{
+            font: 12pt Arial;
+        }
+        h1, h2, h3 {
+            font-family: 'Pacifico', cursive; 
+            font-weight: normal;
+        }
+        button{
+            background-color: green; 
+            color: white; 
+            font-size: 12pt; 
+            padding: 5px; 
+        }
+        input{
+            font-size: 12pt;
+        }
+    </style>
+</head>
+<body>
+    <h1>Contagem "inteligente"</h1>
+    <p>Use qualquer valor nas caixas, simule contagens crescentes e regressivas. Use também valores negativos.</p>
+    <p>Valor final: <input type="number" name="num" id="start" placeholder="Início da contagem"></p>
+    <p>Valor final: <input type="number" name="num" id="end" placeholder="Fim da contagem"></p>
+    <button onclick="contar()">Contar</button>
+    <p id="contagem">Preencha os dados acima e aperte o botão.</p>
+
+    <script>
+        function contar(){
+            let start = document.getElementById('start').value
+            let end = document.getElementById('end').value
+            let res = document.getElementById('contagem')
+
+            res.innerHTML += `<h2>Contando de ${start} até ${end}</h2><p></p>`
+                
+                if (start < end){
+                    for (let i = start; i <= end; i++){
+                        res.innerHTML += `${i} 👉 `
+                    }
+                }else{
+                    for (let i = start; i >= end; i--){
+                        res.innerHTML += `${i} 👉 `
+                    }
+                }
+                res.innerHTML += '🏁'
+        }
+    </script>
+</body>
+</html>

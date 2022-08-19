@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interagindo com o sistema</title>
+    <style>
+        @font-face { font-family: 'Pacifico'; src: url('FwZY7-Qmy14u9lezJ-6H6Mk.woff2'); } 
+        body{
+            font: 12pt Arial;
+        }
+        h1, h2, h3 {
+            font-family: 'Pacifico', cursive; 
+            font-weight: normal;
+        }
+        button{
+            font-size: 12pt;
+            padding: 30px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Interagindo com o sistema</h1>
+    <button onclick="inicio()">Clique em mim</button>
+    <p id="resultado">Aqui vai aparecer algo...</p>
+
+    <script>
+        function inicio(){
+            let res = document.getElementById('resultado')
+            let data = new Date
+
+            res.innerHTML = `O que eu recebi do sistema foi <mark>${data}</mark>`
+        }
+    </script>
+</body>
+</html>
