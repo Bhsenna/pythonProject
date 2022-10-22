@@ -1,5 +1,5 @@
 from Funções.Lista.Func import getFloat, getInt
-tamanho_boca = 3 * 3 * 4
+tamanho_boca = 63.3
 
 
 class Coisa():
